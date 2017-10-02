@@ -5,17 +5,17 @@ CREATE TABLE Branch(bno INTEGER PRIMARY KEY,
 					tel_no VARCHAR2(20) );
 
 CREATE TABLE Staff(sno INTEGER PRIMARY KEY,
-				   fname VARCHAR(20),
-				   lname VARCHAR2(15),
-				   address VARCHAR2(40),
-				   tel_no VARCHAR2(50),
-				   position VARCHAR2(60),
-				   sex VARCHAR2(6),
-				   CONSTRAINT sex_ch CHECK(sex IN('male','female')), 
-				   dob DATE,
-				   salary INTEGER, 
-				   bno INTEGER,
-				   CONSTRAINT staff_branch FOREIGN KEY (bno) REFERENCES Branch); 
+fname VARCHAR(20),
+lname VARCHAR2(15),
+address VARCHAR2(40),
+tel_no VARCHAR2(50),
+position VARCHAR2(60),
+sex VARCHAR2(6),
+CONSTRAINT sex_ch CHECK(sex IN('male','female')), 
+dob DATE,
+salary INTEGER, 
+bno INTEGER,
+CONSTRAINT staff_branch FOREIGN KEY (bno) REFERENCES Branch); 
 				   
 CREATE TABLE Owner (ono INTEGER PRIMARY KEY ,
 					fname VARCHAR2(20),
