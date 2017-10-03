@@ -1,67 +1,70 @@
-CREATE TABLE Branch(bno INTEGER PRIMARY KEY,
-					street VARCHAR2(30),
-					city VARCHAR2(20), 
-					CONSTRAINT city_ch CHECK(city IN('Grodno','Mogilev')),
-					tel_no VARCHAR2(20) );
+CREATE TABLE Branch(
+bno INTEGER PRIMARY KEY,
+street VARCHAR2(30),
+city VARCHAR2(20), 
+CONSTRAINT city_ch CHECK(city IN('Grodno','Mogilev')),
+tel_no VARCHAR2(20) );
 
-CREATE TABLE Staff(sno INTEGER PRIMARY KEY,
-				   fname VARCHAR(20),
-				   lname VARCHAR2(15),
-				   address VARCHAR2(40),
-				   tel_no VARCHAR2(50),
-				   position VARCHAR2(60),
-				   sex VARCHAR2(6),
-				   CONSTRAINT sex_ch CHECK(sex IN('male','female')), 
-				   dob DATE,
-				   salary INTEGER, 
-				   bno INTEGER,
-				   CONSTRAINT staff_branch FOREIGN KEY (bno) REFERENCES Branch); 
+CREATE TABLE Staff(
+sno INTEGER PRIMARY KEY,
+fname VARCHAR(20),
+lname VARCHAR2(15),
+address VARCHAR2(40),
+tel_no VARCHAR2(50),
+position VARCHAR2(60),
+sex VARCHAR2(6),
+CONSTRAINT sex_ch CHECK(sex IN('male','female')), 
+dob DATE,
+salary INTEGER, 
+bno INTEGER,
+CONSTRAINT staff_branch FOREIGN KEY (bno) REFERENCES Branch); 
 				   
-CREATE TABLE Owner (ono INTEGER PRIMARY KEY ,
-					fname VARCHAR2(20),
-					lname VARCHAR2(20), 
-					address VARCHAR2(60),
-					tel_no VARCHAR2(30) );				   
+CREATE TABLE Owner(
+ono INTEGER PRIMARY KEY ,
+fname VARCHAR2(20),
+lname VARCHAR2(20), 
+address VARCHAR2(60),
+tel_no VARCHAR2(30) );				   
 
-CREATE TABLE Property_for_rent (pno INTEGER PRIMARY KEY,
-								street VARCHAR2(60),
-								city VARCHAR2(30),
-								types VARCHAR2(1),
-								CONSTRAINT types_ch CHECK(types IN('h','f')),
-								rooms INTEGER,
-								rent INTEGER,
-								ono INTEGER,
-								sno INTEGER,
-								bno INTEGER,
-								CONSTRAINT rent_owner FOREIGN KEY (ono) REFERENCES Owner,
-								CONSTRAINT rent_staff FOREIGN KEY (sno) REFERENCES Staff,
-								CONSTRAINT rent_branch FOREIGN KEY (bno) REFERENCES Branch);
+CREATE TABLE Property_for_rent(
+pno INTEGER PRIMARY KEY,
+street VARCHAR2(60),
+city VARCHAR2(30),
+types VARCHAR2(1),
+CONSTRAINT types_ch CHECK(types IN('h','f')),
+rooms INTEGER,
+rent INTEGER,
+ono INTEGER,
+sno INTEGER,
+bno INTEGER,
+CONSTRAINT rent_owner FOREIGN KEY (ono) REFERENCES Owner,
+CONSTRAINT rent_staff FOREIGN KEY (sno) REFERENCES Staff,
+CONSTRAINT rent_branch FOREIGN KEY (bno) REFERENCES Branch);
 
-CREATE TABLE Renter (rno INTEGER PRIMARY KEY,
-                     fname VARCHAR2(20),
-                     lname VARCHAR2(20), 
-					 address VARCHAR2(60),
-					 tel_no VARCHAR2(30),
-					 pref_type VARCHAR2(1),
-					 CONSTRAINT pref_type_ch CHECK(pref_type IN('h','f')),
-					 max_rent INTEGER,
-           bno INTEGER,
-					 CONSTRAINT renter_branch FOREIGN KEY (bno) REFERENCES Branch );
+CREATE TABLE Renter(
+rno INTEGER PRIMARY KEY,
+fname VARCHAR2(20),
+lname VARCHAR2(20), 
+address VARCHAR2(60),
+tel_no VARCHAR2(30),
+pref_type VARCHAR2(1),
+CONSTRAINT pref_type_ch CHECK(pref_type IN('h','f')),
+max_rent INTEGER,
+bno INTEGER,
+CONSTRAINT renter_branch FOREIGN KEY (bno) REFERENCES Branch );
 
-
-CREATE TABLE Viewing (rno INTEGER,
-					  pno INTEGER,
-					  CONSTRAINT frn_key_for_renter FOREIGN KEY (rno) REFERENCES Renter,
-					  CONSTRAINT frn_key_for_property FOREIGN KEY (pno) REFERENCES Property_for_rent,
-					  CONSTRAINT pr_keys PRIMARY KEY(rno, pno),
-					  fname VARCHAR2(20),
-					  date_o DATE,
-					  comment_o LONG);
+CREATE TABLE Viewing(
+rno INTEGER,
+pno INTEGER,
+CONSTRAINT frn_key_for_renter FOREIGN KEY (rno) REFERENCES Renter,
+CONSTRAINT frn_key_for_property FOREIGN KEY (pno) REFERENCES Property_for_rent,
+CONSTRAINT pr_keys PRIMARY KEY(rno, pno),
+fname VARCHAR2(20),
+date_o DATE,
+comment_o LONG);
 					 
 CREATE SYNONYM objects
 FOR Property_for_rent;
-
-
 
 INSERT INTO Branch (bno,street,city,tel_no) values (1,'Gikalo', 'Grodno', '12-12-12');
 INSERT INTO Branch (bno,street,city,tel_no) values (2,'Pdadad', 'Grodno', '21-12-21');
@@ -75,7 +78,6 @@ INSERT INTO Staff (sno,fname,lname,address,tel_no,position,sex,dob,salary,bno) v
 INSERT INTO Staff (sno,fname,lname,address,tel_no,position,sex,dob,salary,bno) values (Staff_seq.NEXTVAL,'Milchman','Alex','Platonova 39','123-97-45','C programmer','male','20-06-2008','1500',3);
 INSERT INTO Staff (sno,fname,lname,address,tel_no,position,sex,dob,salary,bno) values (Staff_seq.NEXTVAL,'Strizhikova','Alesya','Loshicha 49','12-97-45','C++ programmer','male','13-02-1970','540',2);
 INSERT INTO Staff (sno,fname,lname,address,tel_no,position,sex,dob,salary,bno) values (Staff_seq.NEXTVAL,'Panova','Masha','Zhigylova','13-07-47','Java programmer','female','23-02-2014','800',2);
-
 
 INSERT INTO objects (pno,street,city,rooms,rent,ono,sno,bno) values (1,'Poreshnaya','Novosibirsk','2','30000',3,2,2);
 INSERT INTO objects (pno,street,city,rooms,rent,ono,sno,bno) values (2,'Zhniva','Grodno','4','10000',3,3,2);
@@ -92,5 +94,3 @@ INSERT INTO Owner (ono,fname,lname,address,tel_no) values (3,'Selevkovich','Ales
 INSERT INTO Viewing (rno,pno,fname,comment_o) values (1,1,'Petrevich','lalalalala');
 INSERT INTO Viewing (rno,pno,fname,comment_o) values (1,2,'Masysheva','need a doctor');
 INSERT INTO Viewing (rno,pno,fname,comment_o) values (2,1,'Lebedev','inra itra');
-
-
