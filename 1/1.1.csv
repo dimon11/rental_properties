@@ -92,4 +92,51 @@ INSERT INTO Owner (ono,fname,lname,address,tel_no) values (3,'Selevkovich','Ales
 
 INSERT INTO Viewing (rno,pno,date_o,comment_o) values (1,1,'11-12-2017','lalalalala');
 INSERT INTO Viewing (rno,pno,date_o,comment_o) values (1,2,'03-06-2017','need a doctor');
+<<<<<<< HEAD:1/1.1.csv
 INSERT INTO Viewing (rno,pno,date_o,comment_o) values (2,1,'11-11-2010','inra itra');
+=======
+INSERT INTO Viewing (rno,pno,date_o,comment_o) values (2,1,'11-11-2010','inra itra');
+
+SELECT COUNT(rno), COUNT(pno) FROM Viewing WHERE date_o BETWEEN '31.12.2016' and '01.01.2018';
+
+SELECT fname, lname, position, S.tel_no 
+FROM objects O, Staff S 
+WHERE O.pno=S.bno and city = ‘Минск’;
+
+
+
+
+------------------
+
+Create table Workers(workers INTEGER PRIMARY KEY,
+fname VARCHAR220),
+lname VARCHAR(15),
+email VARCHAR2(30),
+tel_no VARCHAR2(30), 
+standing varchar2(30) );
+Create table Suppliers(suppliers integer primary key,
+firm_name varchar2(30), 
+country varchar2(30), 
+tel_no varchar2(30) );
+Create table Clients(cl integer primary key,
+fname varchar2(30),
+lname varchar2(30), 
+firm_name varchar2(30),
+tel_no varchar2(30) );
+
+Create table HLM(hlm integer primary key,
+title varchar2(40), 
+destiny varchar2(20), 
+price integer);
+
+Create table Waybills(wb integer primary key,
+capacity integer,
+price integer,
+wb_date date,
+hlm integer,
+suppliers integer,
+workers integer, 
+constraint wb_hlm foreign key (hlm) references HLM,
+constraint wb_sup foreign key (suppliers) references Suppliers,
+constraint wb_work foreign key (workers) references Workers);
+>>>>>>> 86906400b46c7b7b437b331cc2bf7dc528e6c414:1/1_laba.csv
