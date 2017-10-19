@@ -59,7 +59,6 @@ pno INTEGER,
 CONSTRAINT frn_key_for_renter FOREIGN KEY (rno) REFERENCES Renter,
 CONSTRAINT frn_key_for_property FOREIGN KEY (pno) REFERENCES Property_for_rent,
 CONSTRAINT pr_keys PRIMARY KEY(rno, pno),
-fname VARCHAR2(20),
 date_o DATE,
 comment_o LONG);
 					 
@@ -91,6 +90,6 @@ INSERT INTO Owner (ono,fname,lname,address,tel_no) values (1,'Churakov','Vasya',
 INSERT INTO Owner (ono,fname,lname,address,tel_no) values (2,'Myshkovets','Sasha','Nowy Mir 7','79-98-87');
 INSERT INTO Owner (ono,fname,lname,address,tel_no) values (3,'Selevkovich','Alesha','Drogichinskaya 94','7341971');
 
-INSERT INTO Viewing (rno,pno,fname,comment_o) values (1,1,'Petrevich','lalalalala');
-INSERT INTO Viewing (rno,pno,fname,comment_o) values (1,2,'Masysheva','need a doctor');
-INSERT INTO Viewing (rno,pno,fname,comment_o) values (2,1,'Lebedev','inra itra');
+INSERT INTO Viewing (rno,pno,date_o,comment_o) values (1,1,'11-12-2017','lalalalala');
+INSERT INTO Viewing (rno,pno,date_o,comment_o) values (1,2,'03-06-2017','need a doctor');
+INSERT INTO Viewing (rno,pno,date_o,comment_o) values (2,1,'11-11-2010','inra itra');
