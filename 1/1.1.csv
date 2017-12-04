@@ -107,38 +107,110 @@ WHERE O.pno=S.bno and city = ‘Минск’;
 
 
 ------------------
-
 Create table Workers(workers INTEGER PRIMARY KEY,
-fname VARCHAR2(20),
-lname VARCHAR2(15),
-email VARCHAR2(30),
-tel_no VARCHAR2(30), 
-standing VARCHAR2(30) );
+fname VARCHAR(20),
+lname VARCHAR(15),
+email VARCHAR2(30) unique,
+tel_no VARCHAR2(30) unique, 
+experience integer);
++
 
 Create table Suppliers(suppliers integer primary key,
-firm_name VARCHAR2(30), 
-country VARCHAR2(30), 
-tel_no VARCHAR2(30) );
+firm_name varchar2(30), 
+country varchar2(30) check (country != 'China'));
++
 
 Create table Clients(cl integer primary key,
-fname VARCHAR2(30),
-lname VARCHAR2(30), 
-firm_name VARCHAR2(30),
-tel_no VARCHAR2(30) );
+fname varchar2(30),
+lname varchar2(30), 
+firm_name varchar2(30),
+tel_no varchar2(30) unique);
++
 
 Create table HLM(hlm integer primary key,
-title VARCHAR2(40), 
-destiny VARCHAR2(20), 
-price integer);
-
-Create table Waybills(wb integer primary key,
-capacity integer,
+title varchar2(40), 
+destiny integer, 
 price integer,
-wb_date date,
+total_capacity integer default 500);
++
+
+Create table Waybills(wb integer,
+total_price integer not null,
+wb_date date default sysdate,
 hlm integer,
 suppliers integer,
 workers integer, 
+wb_capacity integer,
 constraint wb_hlm foreign key (hlm) references HLM,
 constraint wb_sup foreign key (suppliers) references Suppliers,
-constraint wb_work foreign key (workers) references Workers);
+constraint wb_work foreign key (workers) references Workers,
+constraint pr_keys2 primary key (wb, hlm));
++
+
+Create table Sale(sale integer,
+hlm integer,
+sale_date date default sysdate,
+sale_capacity integer,
+cl integer,
+workers integer,
+constraint cl_sale foreign key (cl) references Clients,
+constraint workers_sale foreign key (workers) references Workers,
+constraint pr_keys3 primary key(sale, hlm));
++
+
+---------------
+Insert into Workers (workers, fname, lname, email, tel_no, experience) values (1,'Zybrov','Gore', 'pygalo@gmail.com','283-54-64',2);
+Insert into Workers (workers, fname, lname, email, tel_no, experience) values (2,'Makarov','Ivan','youtubegod@gmail.com','325-53-63',4);
+Insert into Workers (workers, fname, lname, email, tel_no, experience) values (3,'Sved','Vlad', 'nebolei@gmail.com','543-59-69',1);
+
+Insert into Suppliers (suppliers, firm_name, country) values (1, 'Bush Emir', 'Turkmenistan');
+Insert into Suppliers (suppliers, firm_name, country) values (2, 'TeamBuild', 'Russia');
+Insert into Suppliers (suppliers, firm_name, country) values (3, 'IOL Trans', 'Russia');
+
+Insert into Clients (cl, fname, lname, firm_name, tel_no) values (1, 'Aleshkin','Evgen','CleverTechnologies','142-19-39');
+Insert into Clients (cl, fname, lname, firm_name, tel_no) values (2, 'Shpilich','Danichka','StudsovetFITC','007-07-08');
+Insert into Clients (cl, fname, lname, firm_name, tel_no) values (3, 'Shelestak','Pavel','DriverSolutions','773-37-70');
+
+Insert into HLM (hlm, title, destiny, price, total_capacity) values (1, 'Hydraulic oil',0.9, 1000, 3000);
+Insert into HLM (hlm, title, destiny, price, total_capacity) values (2, 'Gear oil',0.92, 3000, 600);
+Insert into HLM (hlm, title, destiny, price, total_capacity) values (3, 'Turbine oil',0.87, 5000, 10000);
+
+Insert into Waybills (wb, hlm, total_price, wb_date, workers, wb_capacity) values (1, 1, 13450,'11-11-1996' ,2, 5700);
+Insert into Waybills (wb, hlm, total_price, wb_date, workers, wb_capacity) values (2, 1, 3450,'01-12-1998' ,3, 7700);
+Insert into Waybills (wb, hlm, total_price, wb_date, workers, wb_capacity) values (3, 3, 4180,'12-01-1999' ,1, 6000);
+
+
+Insert into Sale (sale, hlm, sale_date, sale_capacity, cl, workers) values (1, 1, '12-05-2016' , 500, 1, 3);
+Insert into Sale (sale, hlm, sale_date, sale_capacity, cl, workers) values (1, 3, '17-04-2017' ,300, 2, 1);
+Insert into Sale (sale, hlm, sale_date, sale_capacity, cl, workers) values (2, 2, '30-06-2014' ,570, 3, 3);
+
+++++++
+
+---------------
+
+1)SELECT Waybills.*
+FROM HLM INNER JOIN Waybills ON HLM.[hlm] = Waybills.[hlm]
+WHERE (((HLM.title)="Gear oil"));
+
+2)SELECT HLM.title, Sum(Waybills.total_price) AS [Sum-sale_capacity]
+FROM HLM INNER JOIN Waybills ON HLM.[hlm] = Waybills.[hlm]
+GROUP BY HLM.title;
+
+3)SELECT Suppliers.firm_name, HLM.title, Waybills.total_price
+FROM Suppliers INNER JOIN (HLM INNER JOIN Waybills ON HLM.[hlm] = Waybills.[hlm]) ON Suppliers.[suppliers] = Waybills.[suppliers]
+WHERE (((HLM.title)="Hydraulic oil") AND ((Waybills.total_price)<[Введите цену]));
+
+4)SELECT Suppliers.firm_name
+FROM Suppliers;
+UNION SELECT HLM.title
+FROM HLM;
+
+5)
+
+
+
+
+
+
+
 
